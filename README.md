@@ -1,6 +1,6 @@
 # NewsFresh
 
-[![Rust CI](https://github.com/krishjag/newsfresh/actions/workflows/rust-cli.yml/badge.svg)](https://github.com/krishjag/newsfresh/actions/workflows/ci.yml)
+[![Rust CI](https://github.com/krishjag/newsfresh/actions/workflows/ci.yml/badge.svg)](https://github.com/krishjag/newsfresh/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/newsfresh.svg)](https://crates.io/crates/newsfresh)
 [![codecov](https://codecov.io/gh/krishjag/newsfresh/graph/badge.svg)](https://codecov.io/gh/krishjag/newsfresh)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
