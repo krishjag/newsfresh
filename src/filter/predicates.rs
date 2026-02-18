@@ -101,15 +101,15 @@ impl RecordFilter for ToneRangeFilter {
         let Some(ref tone) = record.tone else {
             return false;
         };
-        if let Some(min) = self.min {
-            if tone.tone < min {
-                return false;
-            }
+        if let Some(min) = self.min
+            && tone.tone < min
+        {
+            return false;
         }
-        if let Some(max) = self.max {
-            if tone.tone > max {
-                return false;
-            }
+        if let Some(max) = self.max
+            && tone.tone > max
+        {
+            return false;
         }
         true
     }
@@ -122,15 +122,15 @@ pub struct DateRangeFilter {
 
 impl RecordFilter for DateRangeFilter {
     fn matches(&self, record: &GkgRecord) -> bool {
-        if let Some(from) = self.from {
-            if record.date < from {
-                return false;
-            }
+        if let Some(from) = self.from
+            && record.date < from
+        {
+            return false;
         }
-        if let Some(to) = self.to {
-            if record.date > to {
-                return false;
-            }
+        if let Some(to) = self.to
+            && record.date > to
+        {
+            return false;
         }
         true
     }

@@ -1,5 +1,5 @@
 /// Split a field by the given delimiter, filtering out empty trailing entries.
-pub fn split_blocks<'a>(input: &'a str, delimiter: char) -> Vec<&'a str> {
+pub fn split_blocks(input: &str, delimiter: char) -> Vec<&str> {
     if input.is_empty() {
         return Vec::new();
     }

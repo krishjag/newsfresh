@@ -36,20 +36,20 @@ fn strip_prefix(theme: &str) -> &str {
     ];
 
     for prefix in PREFIXES {
-        if let Some(rest) = theme.strip_prefix(prefix) {
-            if !rest.is_empty() {
-                return rest;
-            }
+        if let Some(rest) = theme.strip_prefix(prefix)
+            && !rest.is_empty()
+        {
+            return rest;
         }
     }
 
     // World Bank codes: WB_123_TOPIC → TOPIC
-    if theme.starts_with("WB_") {
-        if let Some(pos) = theme[3..].find('_') {
-            let after_number = &theme[3 + pos + 1..];
-            if !after_number.is_empty() {
-                return after_number;
-            }
+    if theme.starts_with("WB_")
+        && let Some(pos) = theme[3..].find('_')
+    {
+        let after_number = &theme[3 + pos + 1..];
+        if !after_number.is_empty() {
+            return after_number;
         }
     }
 

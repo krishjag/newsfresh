@@ -141,13 +141,13 @@ impl super::SearchEngine for TantivyEngine {
                 .doc(doc_address)
                 .map_err(|e| NewsfreshError::Other(format!("Failed to retrieve doc: {e}")))?;
 
-            if let Some(idx_value) = doc.get_first(self.search_schema.record_idx) {
-                if let Some(idx) = idx_value.as_u64() {
-                    hits.push(ScoredHit {
-                        record_index: idx as usize,
-                        score,
-                    });
-                }
+            if let Some(idx_value) = doc.get_first(self.search_schema.record_idx)
+                && let Some(idx) = idx_value.as_u64()
+            {
+                hits.push(ScoredHit {
+                    record_index: idx as usize,
+                    score,
+                });
             }
         }
 

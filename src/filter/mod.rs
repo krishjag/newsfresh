@@ -10,6 +10,12 @@ pub struct CompositeFilter {
     filters: Vec<Box<dyn RecordFilter>>,
 }
 
+impl Default for CompositeFilter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CompositeFilter {
     pub fn new() -> Self {
         Self {

@@ -362,10 +362,10 @@ fn run_pipeline(
                 }
                 formatter.write_record(&record)?;
                 count += 1;
-                if let Some(lim) = limit {
-                    if count >= lim {
-                        break;
-                    }
+                if let Some(lim) = limit
+                    && count >= lim
+                {
+                    break;
                 }
             }
             Err(e) => {

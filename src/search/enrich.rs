@@ -75,10 +75,10 @@ fn collect_locations(record: &GkgRecord) -> String {
             parts.push(country.to_string());
         }
         // Layer 3: expand ADM1 code
-        if !loc.adm1_code.is_empty() {
-            if let Some(adm1) = adm1::adm1_name(&loc.adm1_code) {
-                parts.push(adm1.to_string());
-            }
+        if !loc.adm1_code.is_empty()
+            && let Some(adm1) = adm1::adm1_name(&loc.adm1_code)
+        {
+            parts.push(adm1.to_string());
         }
     }
 
@@ -87,10 +87,10 @@ fn collect_locations(record: &GkgRecord) -> String {
         if let Some(country) = fips::country_name(&loc.country_code) {
             parts.push(country.to_string());
         }
-        if !loc.adm1_code.is_empty() {
-            if let Some(adm1) = adm1::adm1_name(&loc.adm1_code) {
-                parts.push(adm1.to_string());
-            }
+        if !loc.adm1_code.is_empty()
+            && let Some(adm1) = adm1::adm1_name(&loc.adm1_code)
+        {
+            parts.push(adm1.to_string());
         }
     }
 
