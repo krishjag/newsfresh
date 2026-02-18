@@ -8,6 +8,14 @@ license = "MIT"
 keywords = ["gdelt", "gkg", "news", "nlp", "geopolitics"]
 categories = ["command-line-utilities", "data-structures", "text-processing"]
 repository = "https://github.com/krishjag/newsfresh"
+exclude = [
+    "agent/",
+    "scripts/",
+    "fuzz/",
+    "data/",
+    ".github/",
+    "summary.html",
+]
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
