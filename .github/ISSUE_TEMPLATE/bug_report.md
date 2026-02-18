@@ -46,7 +46,7 @@ newsfresh ...
 
 ## Environment
 - **OS:** [e.g., Windows 11, macOS 14, Ubuntu 22.04]
-- **newsfresh Version:** [e.g., 0.1.0]
+- **newsfresh Version:** [e.g., 0.1.0-beta.1]
 - **Installation Method:** [binary release / cargo install / built from source]
 - **Rust Version (if applicable):** [e.g., 1.85.0]
 
