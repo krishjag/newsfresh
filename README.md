@@ -45,23 +45,34 @@ Download the latest release from [GitHub Releases](https://github.com/krishjag/n
 **Linux / macOS:**
 
 ```bash
-# Linux (x86_64)
-curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-x86_64-unknown-linux-gnu.tar.gz | tar xz
+# Linux (x64)
+curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-linux-x64.tar.gz | tar xz
+sudo mv newsfresh /usr/local/bin/
+
+# Linux (arm64)
+curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-linux-arm64.tar.gz | tar xz
 sudo mv newsfresh /usr/local/bin/
 
 # macOS (Apple Silicon)
-curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-aarch64-apple-darwin.tar.gz | tar xz
+curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-macos-arm64.tar.gz | tar xz
 sudo mv newsfresh /usr/local/bin/
 
 # macOS (Intel)
-curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-x86_64-apple-darwin.tar.gz | tar xz
+curl -L https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-macos-x64.tar.gz | tar xz
 sudo mv newsfresh /usr/local/bin/
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-Invoke-WebRequest -Uri https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-x86_64-pc-windows-msvc.zip -OutFile newsfresh.zip
+# Windows (x64)
+Invoke-WebRequest -Uri https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-windows-x64.zip -OutFile newsfresh.zip
+Expand-Archive newsfresh.zip -DestinationPath .
+Move-Item newsfresh.exe "$env:USERPROFILE\.cargo\bin\"   # or any directory in your PATH
+Remove-Item newsfresh.zip
+
+# Windows (arm64)
+Invoke-WebRequest -Uri https://github.com/krishjag/newsfresh/releases/latest/download/newsfresh-windows-arm64.zip -OutFile newsfresh.zip
 Expand-Archive newsfresh.zip -DestinationPath .
 Move-Item newsfresh.exe "$env:USERPROFILE\.cargo\bin\"   # or any directory in your PATH
 Remove-Item newsfresh.zip
