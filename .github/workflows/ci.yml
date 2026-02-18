@@ -252,7 +252,7 @@ jobs:
 
       - name: Publish to crates.io
         run: |
-          cargo publish --token ${{ secrets.CRATES_IO_TOKEN }} 2>&1 | tee /tmp/publish.log
+          cargo publish --allow-dirty --token ${{ secrets.CRATES_IO_TOKEN }} 2>&1 | tee /tmp/publish.log
           exit_code=${PIPESTATUS[0]}
           if [ $exit_code -ne 0 ]; then
             if grep -q "already uploaded" /tmp/publish.log; then
