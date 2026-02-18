@@ -1,5 +1,10 @@
 # NewsFresh
 
+[![Rust CI](https://github.com/krishjag/newsfresh/actions/workflows/rust-cli.yml/badge.svg)](https://github.com/krishjag/newsfresh/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/newsfresh.svg)](https://crates.io/crates/newsfresh)
+[![codecov](https://codecov.io/gh/krishjag/newsfresh/graph/badge.svg)](https://codecov.io/gh/krishjag/newsfresh)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A fast CLI tool for querying, filtering, and analyzing [GDELT Global Knowledge Graph (GKG) v2.1](https://blog.gdeltproject.org/gdelt-2-0-our-global-world-in-realtime/) data — the world's largest open dataset of global news events, updated every 15 minutes. Includes an LLM-powered agent that turns GDELT into a personalized agentic news feed, delivering real-time email alerts tailored to your interests.
 
 ## What is GDELT?
