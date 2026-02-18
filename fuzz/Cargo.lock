@@ -1343,7 +1343,7 @@ dependencies = [
 
 [[package]]
 name = "newsfresh"
-version = "0.1.0-beta.1"
+version = "v0.1.0-beta.2"
 dependencies = [
  "clap",
  "futures-util",
