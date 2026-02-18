@@ -1,6 +1,6 @@
 [package]
 name = "newsfresh"
-version = "v0.1.0-beta.2"
+version = "0.1.0-beta.2"
 edition = "2024"
 description = "CLI and library for querying, filtering, and analyzing GDELT Global Knowledge Graph (GKG) v2.1 data — the world's largest open news event dataset"
 readme = "README.md"
