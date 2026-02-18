@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/krishjag/newsfresh/discussions
+    about: Ask questions, share ideas, or discuss newsfresh usage
+  - name: GDELT Project
+    url: https://www.gdeltproject.org/
+    about: Learn more about the GDELT Global Knowledge Graph

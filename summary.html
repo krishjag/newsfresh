@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>newsfresh — Command Reference</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #d2a8ff;
+    --accent4: #f0883e;
+    --code-bg: #0d1117;
+    --tag-bg: #1f2937;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: #fff;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+  .badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .badge-rust { background: #b7410e22; color: #f97316; border: 1px solid #f9731644; }
+  .badge-cli { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; }
+  .badge-polars { background: #58a6ff22; color: #58a6ff; border: 1px solid #58a6ff44; }
+  .badge-tantivy { background: #d2a8ff22; color: #d2a8ff; border: 1px solid #d2a8ff44; }
+  .badge-tealeaf { background: #f0883e22; color: #f0883e; border: 1px solid #f0883e44; }
+
+  nav {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  nav h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+  nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  nav a:hover { text-decoration: underline; }
+  nav a code { background: var(--tag-bg); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+  section h2 {
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 0.2rem;
+  }
+  section h2 code {
+    color: var(--accent);
+    font-size: 1.3rem;
+  }
+  .cmd-desc {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    color: var(--accent3);
+    margin: 1.2rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.5rem 0.8rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  td {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  td code {
+    background: var(--tag-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+  }
+  tr:hover td { background: #1c2129; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  pre .prompt { color: var(--accent2); }
+  pre .comment { color: var(--text-muted); }
+  pre .output { color: #8b949e; }
+
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+  }
+  .tag-required { background: #f8514922; color: #f85149; border: 1px solid #f8514944; }
+  .tag-default { background: #3fb95022; color: #3fb950; border: 1px solid #3fb95044; }
+
+  .stats-output {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.82rem;
+  }
+
+  .format-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 768px) {
+    .format-grid { grid-template-columns: 1fr; }
+    body { padding: 1rem; }
+    section { padding: 1rem 1.2rem; }
+  }
+
+  .section-global { border-left: 3px solid var(--accent4); }
+  .section-fetch { border-left: 3px solid var(--accent2); }
+  .section-parse { border-left: 3px solid var(--accent); }
+  .section-query { border-left: 3px solid var(--accent3); }
+  .section-analyze { border-left: 3px solid #f0883e; }
+  .section-schema { border-left: 3px solid #8b949e; }
+
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<h1><span>newsfresh</span> Command Reference</h1>
+<div class="badges">
+  <span class="badge badge-rust">Rust 2024 Edition</span>
+  <span class="badge badge-cli">CLI + Library</span>
+  <span class="badge badge-tantivy">Tantivy BM25 Search</span>
+  <span class="badge badge-polars">Polars DataFrames</span>
+  <span class="badge badge-tealeaf">TeaLeaf data format</span>
+</div>
+<p class="subtitle">
+  A fast CLI tool for querying, filtering, and analyzing
+  <a href="https://blog.gdeltproject.org/gdelt-2-0-our-global-world-in-realtime/" style="color:var(--accent)">GDELT Global Knowledge Graph (GKG) v2.1</a>
+  data &mdash; the world's largest open dataset of global news events, updated every 15 minutes.
+</p>
+
+<nav>
+  <h2>Commands</h2>
+  <ul>
+    <li><a href="#global">Global Options</a></li>
+    <li><a href="#fetch"><code>fetch</code></a></li>
+    <li><a href="#parse"><code>parse</code></a></li>
+    <li><a href="#query"><code>query</code></a></li>
+    <li><a href="#analyze"><code>analyze</code></a></li>
+    <li><a href="#schema"><code>schema</code></a></li>
+    <li><a href="#filters">Filters</a></li>
+    <li><a href="#formats">Output Formats</a></li>
+  </ul>
+</nav>
+
+<!-- COMMANDS:START -->
+<!-- ==================== GLOBAL OPTIONS ==================== -->
+<section id="global" class="section-global">
+  <h2>Global Options</h2>
+  <p class="cmd-desc">These options are available on every subcommand.</p>
+  <table>
+    <tr><th>Flag</th><th>Description</th></tr>
+    <tr><td><code>-v, --verbose</code></td><td>Increase logging verbosity. Stackable: <code>-v</code> (info), <code>-vv</code> (debug), <code>-vvv</code> (trace)</td></tr>
+    <tr><td><code>-q, --quiet</code></td><td>Suppress non-error output</td></tr>
+    <tr><td><code>-h, --help</code></td><td>Print help for any command</td></tr>
+  </table>
+  <pre><span class="prompt">$</span> newsfresh --help
+Query and analyze GDELT GKG v2.1 data
+
+Usage: newsfresh [OPTIONS] &lt;COMMAND&gt;
+
+Commands:
+  fetch    Download GKG data (latest or historical)
+  parse    Parse a local GKG file and output records
+  query    Fetch + parse + filter in one step
+  schema   Print GKG type definitions
+  analyze  NL search + analyze GKG records
+  help     Print this message or the help of the given subcommand(s)</pre>
+</section>
+
+<!-- ==================== FETCH ==================== -->
+<section id="fetch" class="section-fetch">
+  <h2><code>fetch</code> &mdash; Download GKG Data</h2>
+  <p class="cmd-desc">Downloads a GKG data file (latest 15-minute update or historical) from GDELT servers. Automatically extracts the CSV from the ZIP archive.</p>
+
+  <h3>Arguments</h3>
+  <table>
+    <tr><th>Flag</th><th>Type</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>--latest</code></td><td>bool</td><td>Fetch the latest 15-minute update</td><td><code>true</code></td></tr>
+    <tr><td><code>--date &lt;DATE&gt;</code></td><td>string</td><td>Fetch a specific historical file (YYYYMMDDHHMMSS)</td><td>&mdash;</td></tr>
+    <tr><td><code>--translation</code></td><td>bool</td><td>Fetch non-English (translation) variant</td><td><code>false</code></td></tr>
+    <tr><td><code>-o, --output &lt;DIR&gt;</code></td><td>path</td><td>Output directory</td><td><code>./data</code></td></tr>
+    <tr><td><code>--keep-zip</code></td><td>bool</td><td>Keep the .zip file after extraction</td><td><code>false</code></td></tr>
+  </table>
+
+  <h3>Examples</h3>
+  <pre><span class="comment"># Latest 15-minute update (default)</span>
+<span class="prompt">$</span> newsfresh fetch
+
+<span class="comment"># Historical file by date</span>
+<span class="prompt">$</span> newsfresh fetch --date 20250217150000
+
+<span class="comment"># Non-English variant, custom output directory, keep zip</span>
+<span class="prompt">$</span> newsfresh fetch --translation -o ./my-data --keep-zip</pre>
+
+  <h3>Sample Output</h3>
+  <pre><span class="output">Fetching: http://data.gdeltproject.org/gdeltv2/20260216054500.gkg.csv.zip
+Extracted: data/20260216054500.gkg.csv</span></pre>
+</section>
+
+<!-- ==================== PARSE ==================== -->
+<section id="parse" class="section-parse">
+  <h2><code>parse</code> &mdash; Parse a Local GKG File</h2>
+  <p class="cmd-desc">Parses a local .csv or .csv.zip GKG file. Supports all filters, output formats, field projection, and offset/limit pagination.</p>
+
+  <h3>Arguments</h3>
+  <table>
+    <tr><th>Flag</th><th>Type</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>&lt;FILE&gt;</code></td><td>path</td><td>Path to a local .csv or .csv.zip GKG file</td><td><span class="tag tag-required">required</span></td></tr>
+    <tr><td><code>-f, --format</code></td><td>enum</td><td>Output format: json, json-compact, tealeaf, tealeaf-compact</td><td><code>json</code></td></tr>
+    <tr><td><code>-o, --output</code></td><td>path</td><td>Output file (stdout if omitted)</td><td><code>stdout</code></td></tr>
+    <tr><td><code>--limit &lt;N&gt;</code></td><td>int</td><td>Maximum number of records to output</td><td><code>all</code></td></tr>
+    <tr><td><code>--offset &lt;N&gt;</code></td><td>int</td><td>Skip first N records</td><td><code>0</code></td></tr>
+    <tr><td><code>--fields &lt;LIST&gt;</code></td><td>string</td><td>Comma-separated field names for projection</td><td><code>all fields</code></td></tr>
+    <tr><td colspan="4" style="color:var(--text-muted)">+ all <a href="#filters" style="color:var(--accent)">filter options</a></td></tr>
+  </table>
+
+  <h3>Examples</h3>
+  <pre><span class="comment"># Parse a CSV file with filters</span>
+<span class="prompt">$</span> newsfresh parse data/20250217150000.gkg.csv \
+  --country US --person &quot;Trump&quot; --limit 10
+
+<span class="comment"># Parse directly from a zip file</span>
+<span class="prompt">$</span> newsfresh parse data/20250217150000.gkg.csv.zip -f json
+
+<span class="comment"># Output specific fields only</span>
+<span class="prompt">$</span> newsfresh parse data/gkg.csv \
+  -f json --fields document_identifier,source_common_name,tone</pre>
+
+  <h3>Sample Output — JSON with field projection</h3>
+  <pre><span class="output">[
+{
+  &quot;document_identifier&quot;: &quot;https://www.washingtonpost.com/politics/2025/02/17/congress-budget-...&quot;,
+  &quot;source_common_name&quot;: &quot;washingtonpost.com&quot;,
+  &quot;tone&quot;: {
+    &quot;tone&quot;: -1.82,
+    &quot;positive_score&quot;: 3.12,
+    &quot;negative_score&quot;: 4.94,
+    &quot;polarity&quot;: 8.06,
+    &quot;activity_ref_density&quot;: 15.43,
+    &quot;self_group_ref_density&quot;: 0.22,
+    &quot;word_count&quot;: 612
+  }
+}
+]</span></pre>
+</section>
+
+<!-- ==================== QUERY ==================== -->
+<section id="query" class="section-query">
+  <h2><code>query</code> &mdash; Fetch + Parse + Filter</h2>
+  <p class="cmd-desc">Downloads a GKG data file, parses it, applies filters, and outputs results — all in one step. Combines fetch + parse.</p>
+
+  <h3>Arguments</h3>
+  <table>
+    <tr><th>Flag</th><th>Type</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>--latest</code></td><td>bool</td><td>Fetch the latest 15-minute update</td><td><code>false</code></td></tr>
+    <tr><td><code>--date &lt;DATE&gt;</code></td><td>string</td><td>Fetch a specific historical file (YYYYMMDDHHMMSS)</td><td>&mdash;</td></tr>
+    <tr><td><code>--translation</code></td><td>bool</td><td>Fetch non-English variant</td><td><code>false</code></td></tr>
+    <tr><td><code>--persist-data-file</code></td><td>bool</td><td>Persist downloaded data to persisted-storage/</td><td><code>false</code></td></tr>
+    <tr><td><code>-f, --format</code></td><td>enum</td><td>Output format</td><td><code>json</code></td></tr>
+    <tr><td><code>-o, --output</code></td><td>path</td><td>Output file</td><td><code>stdout</code></td></tr>
+    <tr><td><code>--limit &lt;N&gt;</code></td><td>int</td><td>Maximum records</td><td><code>all</code></td></tr>
+    <tr><td><code>--offset &lt;N&gt;</code></td><td>int</td><td>Skip first N records</td><td><code>0</code></td></tr>
+    <tr><td><code>--fields &lt;LIST&gt;</code></td><td>string</td><td>Comma-separated field projection</td><td><code>all fields</code></td></tr>
+    <tr><td colspan="4" style="color:var(--text-muted)">+ all <a href="#filters" style="color:var(--accent)">filter options</a></td></tr>
+  </table>
+
+  <h3>Examples</h3>
+  <pre><span class="comment"># Fetch latest and filter by theme</span>
+<span class="prompt">$</span> newsfresh query --country US --theme &quot;CLIMATE_CHANGE&quot; --limit 5
+
+<span class="comment"># Historical data with tone filter</span>
+<span class="prompt">$</span> newsfresh query --date 20250201120000 --tone-min=-10 --tone-max=-2
+
+<span class="comment"># Persist downloaded files for reuse</span>
+<span class="prompt">$</span> newsfresh query --persist-data-file --country US --limit 20
+
+<span class="comment"># Output in compact TeaLeaf format</span>
+<span class="prompt">$</span> newsfresh query --country UK --has-quote -f tealeaf-compact</pre>
+</section>
+
+<!-- ==================== ANALYZE ==================== -->
+<section id="analyze" class="section-analyze">
+  <h2><code>analyze</code> &mdash; Full-Text Search &amp; Statistics</h2>
+  <p class="cmd-desc">Builds an in-memory Tantivy full-text index with BM25 ranking over GKG records, then runs natural language search queries. Optionally computes aggregate statistics using Polars DataFrames.</p>
+
+  <h3>Search Enrichment</h3>
+  <table>
+    <tr><th>Enrichment</th><th>Example</th></tr>
+    <tr><td>FIPS country codes expanded to full names (240+ countries)</td><td>Searching &quot;United States&quot; matches code US</td></tr>
+    <tr><td>ADM1 state/province codes expanded to readable names</td><td>Searching &quot;California&quot; matches US06</td></tr>
+    <tr><td>Theme code canonicalization</td><td>TAX_FNCACT_PRESIDENT becomes searchable as &quot;President&quot;</td></tr>
+  </table>
+
+  <h3>Arguments</h3>
+  <table>
+    <tr><th>Flag</th><th>Type</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>[FILE]</code></td><td>path</td><td>Local .csv or .csv.zip file (optional — use --latest or --date instead)</td><td>&mdash;</td></tr>
+    <tr><td><code>--search &lt;QUERY&gt;</code></td><td>string</td><td>Natural language search query</td><td><span class="tag tag-required">required</span></td></tr>
+    <tr><td><code>--latest</code></td><td>bool</td><td>Fetch the latest 15-minute update</td><td><code>false</code></td></tr>
+    <tr><td><code>--date &lt;DATE&gt;</code></td><td>string</td><td>Fetch historical file (YYYYMMDDHHMMSS)</td><td>&mdash;</td></tr>
+    <tr><td><code>--translation</code></td><td>bool</td><td>Non-English variant</td><td><code>false</code></td></tr>
+    <tr><td><code>--persist-data-file</code></td><td>bool</td><td>Persist downloaded data</td><td><code>false</code></td></tr>
+    <tr><td><code>--limit &lt;N&gt;</code></td><td>int</td><td>Maximum number of results</td><td><code>20</code></td></tr>
+    <tr><td><code>--stats</code></td><td>bool</td><td>Show aggregate statistics instead of records</td><td><code>false</code></td></tr>
+    <tr><td><code>--stats-top-n &lt;N&gt;</code></td><td>int</td><td>Number of top entries per frequency table</td><td><code>10</code></td></tr>
+    <tr><td><code>-f, --format</code></td><td>enum</td><td>Output format (when not using --stats)</td><td><code>tealeaf</code></td></tr>
+    <tr><td><code>-o, --output</code></td><td>path</td><td>Output file</td><td><code>stdout</code></td></tr>
+    <tr><td><code>--fields &lt;LIST&gt;</code></td><td>string</td><td>Comma-separated field projection</td><td><code>all fields</code></td></tr>
+    <tr><td colspan="4" style="color:var(--text-muted)">+ all <a href="#filters" style="color:var(--accent)">filter options</a></td></tr>
+  </table>
+
+  <h3>Examples &mdash; Record Output</h3>
+  <pre><span class="comment"># Search the latest GDELT data with natural language</span>
+<span class="prompt">$</span> newsfresh analyze --latest \
+  --search &quot;elections Congress US economy&quot; --limit 20
+
+<span class="comment"># Search with additional structured filters</span>
+<span class="prompt">$</span> newsfresh analyze --latest \
+  --search &quot;climate carbon emissions policy&quot; \
+  --country US --limit 10
+
+<span class="comment"># From a local file</span>
+<span class="prompt">$</span> newsfresh analyze data/gkg.csv \
+  --search &quot;Ukraine Russia ceasefire negotiations&quot; --limit 15
+
+<span class="comment"># Compact TeaLeaf output for LLM consumption (~47% fewer tokens)</span>
+<span class="prompt">$</span> newsfresh analyze --latest \
+  --search &quot;AI regulation technology&quot; --limit 10 -f tealeaf-compact</pre>
+
+  <h3>Examples &mdash; Aggregate Statistics (<code>--stats</code>)</h3>
+  <pre><span class="comment"># Aggregate statistics with Polars DataFrames</span>
+<span class="prompt">$</span> newsfresh analyze --latest \
+  --search &quot;US politics&quot; --limit 50 --stats
+
+<span class="comment"># Top 5 per category</span>
+<span class="prompt">$</span> newsfresh analyze data/gkg.csv \
+  --search &quot;climate change&quot; --stats --stats-top-n 5 --limit 100</pre>
+
+  <h3>Sample <code>--stats</code> Output</h3>
+  <pre class="stats-output"><span class="output">=== GDELT Analysis Stats (50 records) ===
+
+--- Top Themes ---
+   1. GENERAL GOVERNMENT            24  (2.0%)
+   2. LEADER                        24  (2.0%)
+   3. GENERAL1                      23  (2.0%)
+   4. GOVERNMENT                    21  (1.8%)
+   5. UNGP FORESTS RIVERS OCEANS    20  (1.7%)
+
+--- Top Countries ---
+   1. United States (US)                48  (31.2%)
+   2. United Kingdom (UK)                9  (5.8%)
+   3. Canada (CA)                        7  (4.5%)
+   4. China (CH)                         7  (4.5%)
+   5. Australia (AS)                     6  (3.9%)
+
+--- Tone ---
+  Mean: -0.82  Std: 3.45  Range: [-8.12, 4.91]
+  Most positive: [4.91] https://www.nytimes.com/.../economy-jobs-report...
+  Most negative: [-8.12] https://www.washingtonpost.com/.../congress-budget-crisis...
+
+--- Top Persons ---
+   1. donald trump         9  (4.9%)
+   2. elon musk            5  (2.7%)
+   3. kamala harris        3  (1.6%)
+   4. marco rubio          3  (1.6%)
+   5. jerome powell        3  (1.6%)
+
+--- Top Organizations ---
+   1. congress                         3  (1.7%)
+   2. federal reserve                  3  (1.7%)
+   3. microsoft                        3  (1.7%)
+   4. pentagon                         2  (1.2%)
+   5. state department                 2  (1.2%)
+
+--- Top Sources ---
+   1. nytimes.com           16  (32.0%)
+   2. washingtonpost.com     6  (12.0%)
+   3. cnn.com               6  (12.0%)
+   4. foxnews.com           5  (10.0%)
+   5. politico.com          4  (8.0%)</span></pre>
+</section>
+
+<!-- ==================== SCHEMA ==================== -->
+<section id="schema" class="section-schema">
+  <h2><code>schema</code> &mdash; Print GKG Type Definitions</h2>
+  <p class="cmd-desc">Prints the complete GKG v2.1 record schema in TeaLeaf or JSON Schema format.</p>
+
+  <h3>Arguments</h3>
+  <table>
+    <tr><th>Flag</th><th>Type</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>-f, --format</code></td><td>enum</td><td>tealeaf or json-schema</td><td><code>tealeaf</code></td></tr>
+  </table>
+
+  <h3>Examples</h3>
+  <pre><span class="comment"># TeaLeaf schema format</span>
+<span class="prompt">$</span> newsfresh schema
+
+<span class="comment"># JSON Schema format</span>
+<span class="prompt">$</span> newsfresh schema -f json-schema</pre>
+</section>
+
+<!-- ==================== FILTERS ==================== -->
+<section id="filters">
+  <h2>Filter Options</h2>
+  <p class="cmd-desc">Available on <code>parse</code>, <code>query</code>, and <code>analyze</code>. All filters compose with <strong>AND</strong> logic.</p>
+  <table>
+    <tr><th>Flag</th><th>Description</th><th>Example</th></tr>
+    <tr><td><code>--person</code></td><td>Person name (case-insensitive substring)</td><td><code>--person &quot;Trump&quot;</code></td></tr>
+    <tr><td><code>--org</code></td><td>Organization name</td><td><code>--org &quot;United Nations&quot;</code></td></tr>
+    <tr><td><code>--theme</code></td><td>GKG theme code</td><td><code>--theme &quot;TAX_POLICY&quot;</code></td></tr>
+    <tr><td><code>--location</code></td><td>Location name</td><td><code>--location &quot;Washington&quot;</code></td></tr>
+    <tr><td><code>--country</code></td><td>FIPS country code</td><td><code>--country US</code></td></tr>
+    <tr><td><code>--tone-min / --tone-max</code></td><td>Tone score range</td><td><code>--tone-min -5 --tone-max 5</code></td></tr>
+    <tr><td><code>--date-from / --date-to</code></td><td>Date range (YYYYMMDD)</td><td><code>--date-from 20250201</code></td></tr>
+    <tr><td><code>--source</code></td><td>Source name</td><td><code>--source &quot;bbc&quot;</code></td></tr>
+    <tr><td><code>--has-image</code></td><td>Only records with a sharing image</td><td><code>--has-image</code></td></tr>
+    <tr><td><code>--has-quote</code></td><td>Only records with quotations</td><td><code>--has-quote</code></td></tr>
+  </table>
+</section>
+
+<!-- ==================== OUTPUT FORMATS ==================== -->
+<section id="formats">
+  <h2>Output Formats</h2>
+  <p class="cmd-desc">Controlled via <code>-f, --format</code>. The <code>--fields</code> flag enables field projection (JSON only).</p>
+  <table>
+    <tr><th>Format</th><th>Flag</th><th>Description</th></tr>
+    <tr><td>JSON (pretty)</td><td><code>-f json</code></td><td>Pretty-printed JSON array (default)</td></tr>
+    <tr><td>JSON (compact)</td><td><code>-f json-compact</code></td><td>Minified single-line JSON</td></tr>
+    <tr><td>TeaLeaf</td><td><code>-f tealeaf</code></td><td>Schema-driven format, ~47% fewer tokens than JSON</td></tr>
+    <tr><td>TeaLeaf (compact)</td><td><code>-f tealeaf-compact</code></td><td>Minified TeaLeaf, additional ~21% savings</td></tr>
+  </table>
+</section>
+<!-- COMMANDS:END -->
+
+<!-- ==================== GKG FIELDS ==================== -->
+<section>
+  <h2>GKG v2.1 Record Fields</h2>
+  <p class="cmd-desc">Each record contains up to 27 tab-delimited fields. The <code>GkgRecord</code> struct maps all of them.</p>
+  <table>
+    <tr><th>#</th><th>Field</th><th>Type</th><th>Description</th></tr>
+    <tr><td>0</td><td><code>gkg_record_id</code></td><td>String</td><td>Unique record identifier</td></tr>
+    <tr><td>1</td><td><code>date</code></td><td>i64</td><td>Publication date (YYYYMMDDHHMMSS)</td></tr>
+    <tr><td>2</td><td><code>source_collection_id</code></td><td>i32</td><td>Source type (1=Web, 2=Citation, 3=Core, ...)</td></tr>
+    <tr><td>3</td><td><code>source_common_name</code></td><td>String</td><td>Human-readable source name</td></tr>
+    <tr><td>4</td><td><code>document_identifier</code></td><td>String</td><td>Article URL</td></tr>
+    <tr><td>5</td><td><code>v1_counts</code></td><td>Vec&lt;CountV1&gt;</td><td>Event counts (protests, arrests, etc.)</td></tr>
+    <tr><td>6</td><td><code>v21_counts</code></td><td>Vec&lt;CountV21&gt;</td><td>V2.1 counts with character offsets</td></tr>
+    <tr><td>7</td><td><code>v1_themes</code></td><td>Vec&lt;String&gt;</td><td>Theme codes (e.g., TAX_POLICY)</td></tr>
+    <tr><td>8</td><td><code>v2_enhanced_themes</code></td><td>Vec&lt;EnhancedTheme&gt;</td><td>Themes with character offsets</td></tr>
+    <tr><td>9</td><td><code>v1_locations</code></td><td>Vec&lt;LocationV1&gt;</td><td>Geocoded locations (country, lat/lon)</td></tr>
+    <tr><td>10</td><td><code>v2_enhanced_locations</code></td><td>Vec&lt;EnhancedLocation&gt;</td><td>V2 locations with ADM2 codes</td></tr>
+    <tr><td>11</td><td><code>v1_persons</code></td><td>Vec&lt;String&gt;</td><td>Person names mentioned</td></tr>
+    <tr><td>12</td><td><code>v2_enhanced_persons</code></td><td>Vec&lt;EnhancedEntity&gt;</td><td>Persons with character offsets</td></tr>
+    <tr><td>13</td><td><code>v1_organizations</code></td><td>Vec&lt;String&gt;</td><td>Organization names</td></tr>
+    <tr><td>14</td><td><code>v2_enhanced_organizations</code></td><td>Vec&lt;EnhancedEntity&gt;</td><td>Organizations with offsets</td></tr>
+    <tr><td>15</td><td><code>tone</code></td><td>Option&lt;Tone&gt;</td><td>Sentiment (tone, polarity, pos/neg, word count)</td></tr>
+    <tr><td>16</td><td><code>v21_enhanced_dates</code></td><td>Vec&lt;EnhancedDate&gt;</td><td>Dates mentioned in the article</td></tr>
+    <tr><td>17</td><td><code>gcam</code></td><td>Vec&lt;GcamEntry&gt;</td><td>GCAM content-analysis dimension scores</td></tr>
+    <tr><td>18</td><td><code>sharing_image</code></td><td>Option&lt;String&gt;</td><td>Primary sharing image URL</td></tr>
+    <tr><td>19</td><td><code>related_images</code></td><td>Vec&lt;String&gt;</td><td>Related image URLs</td></tr>
+    <tr><td>20</td><td><code>social_image_embeds</code></td><td>Vec&lt;String&gt;</td><td>Social media image embeds</td></tr>
+    <tr><td>21</td><td><code>social_video_embeds</code></td><td>Vec&lt;String&gt;</td><td>Social media video embeds</td></tr>
+    <tr><td>22</td><td><code>quotations</code></td><td>Vec&lt;Quotation&gt;</td><td>Direct quotes with attribution verbs</td></tr>
+    <tr><td>23</td><td><code>all_names</code></td><td>Vec&lt;NameEntry&gt;</td><td>All named entities</td></tr>
+    <tr><td>24</td><td><code>amounts</code></td><td>Vec&lt;AmountEntry&gt;</td><td>Monetary/numerical amounts</td></tr>
+    <tr><td>25</td><td><code>translation_info</code></td><td>Option&lt;TranslationInfo&gt;</td><td>Translation source language and engine</td></tr>
+    <tr><td>26</td><td><code>extras_xml</code></td><td>Option&lt;String&gt;</td><td>Extra XML content</td></tr>
+  </table>
+</section>
+
+<!-- ==================== MODULE OVERVIEW ==================== -->
+<section>
+  <h2>Module Overview</h2>
+  <p class="cmd-desc">The crate is organized into 9 public modules.</p>
+  <table>
+    <tr><th>Module</th><th>Description</th></tr>
+    <tr><td><code>cli</code></td><td>CLI argument definitions (clap derive) &mdash; structs for all 5 subcommands</td></tr>
+    <tr><td><code>error</code></td><td><code>NewsfreshError</code> enum covering HTTP, I/O, parse, ZIP, JSON, and Polars errors</td></tr>
+    <tr><td><code>fetch</code></td><td>HTTP client for downloading GKG data, ZIP extraction, lastupdate.txt parsing</td></tr>
+    <tr><td><code>filter</code></td><td><code>RecordFilter</code> trait and 10 composable predicate filters</td></tr>
+    <tr><td><code>model</code></td><td>Complete GKG v2.1 data model &mdash; <code>GkgRecord</code> with 27 fields and 14 sub-types</td></tr>
+    <tr><td><code>output</code></td><td><code>OutputFormatter</code> trait with JSON and TeaLeaf formatters, field projection, schema printing</td></tr>
+    <tr><td><code>parse</code></td><td>Streaming GKG parser &mdash; <code>GkgReader</code> iterator, tab-delimited field parsing</td></tr>
+    <tr><td><code>search</code></td><td>Tantivy full-text search &mdash; <code>SearchEngine</code> trait, BM25, FIPS/ADM1/theme enrichment</td></tr>
+    <tr><td><code>stats</code></td><td>Polars DataFrame aggregation &mdash; theme/country/person/org/source frequency, tone statistics</td></tr>
+  </table>
+</section>
+
+<footer>
+  Generated from <strong>newsfresh v0.1.0</strong> &mdash; all outputs validated against <code>data/20260216054500.gkg.csv</code> (724 records)
+</footer>
+
+</body>
+</html>

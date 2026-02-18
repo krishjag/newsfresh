@@ -1,0 +1,43 @@
+[package]
+name = "newsfresh-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.newsfresh]
+path = ".."
+default-features = false
+
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "fuzz_parse_record"
+path = "fuzz_targets/fuzz_parse_record.rs"
+doc = false
+
+[[bin]]
+name = "fuzz_parse_tone"
+path = "fuzz_targets/fuzz_parse_tone.rs"
+doc = false
+
+[[bin]]
+name = "fuzz_parse_locations"
+path = "fuzz_targets/fuzz_parse_locations.rs"
+doc = false
+
+[[bin]]
+name = "fuzz_parse_quotations"
+path = "fuzz_targets/fuzz_parse_quotations.rs"
+doc = false
+
+[[bin]]
+name = "fuzz_delimiters"
+path = "fuzz_targets/fuzz_delimiters.rs"
+doc = false

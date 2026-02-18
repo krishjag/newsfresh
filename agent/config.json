@@ -1,0 +1,43 @@
+{
+  "active_llm_provider": "claude-haiku",
+  "llm_providers": [
+    {
+      "id": "claude-haiku",
+      "provider": "claude",
+      "model": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "claude-sonnet",
+      "provider": "claude",
+      "model": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "openai-mini",
+      "provider": "openai",
+      "model": "gpt-4o-mini"
+    },
+    {
+      "id": "openai-4o",
+      "provider": "openai",
+      "model": "gpt-4o"
+    }
+  ],
+  "profiles": [
+    {
+      "name": "US Politics",
+      "search": "Congress White House politics legislation",
+      "filters": {
+        "country": "US"
+      },
+      "limit": 1
+    }    
+  ],
+  "email": {
+    "to_env": "NEWS_RECIPIENT",
+    "from_env": "SENDGRID_VERIFIED_SENDER",
+    "subject_prefix": "[GDELT Monitor]"
+  },
+  "interval_minutes": 15,
+  "relevance_threshold": 1.0,
+  "newsfresh_path": "../target/release/newsfresh.exe"
+}

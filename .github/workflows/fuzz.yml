@@ -1,0 +1,151 @@
+# Continuous fuzzing for newsfresh parse layer
+#
+# Runs 5 fuzz targets serially to avoid memory pressure:
+#   1. fuzz_parse_record     (full 27-field GKG parser, exercises all sub-parsers)
+#   2. fuzz_delimiters       (split_blocks, parse_f64/i64/i32, hash_field)
+#   3. fuzz_parse_tone       (comma-delimited tone field)
+#   4. fuzz_parse_locations  (V1 + V2 enhanced #-delimited location blocks)
+#   5. fuzz_parse_quotations (quotations, names, amounts, translation)
+#
+# Each target runs for 120 seconds. Total wall time: ~12 minutes.
+
+name: Fuzz
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/parse/**'
+      - 'fuzz/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.github/workflows/fuzz.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/parse/**'
+      - 'fuzz/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.github/workflows/fuzz.yml'
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      fuzz_duration:
+        description: 'Fuzz duration per target (seconds)'
+        required: false
+        default: '120'
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+  FUZZ_DURATION: ${{ github.event.inputs.fuzz_duration || '120' }}
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    if: >
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, '[fuzz]')
+    runs-on: ubuntu-latest
+    name: Fuzz Targets
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust nightly toolchain
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz --locked || true
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-fuzz-registry-${{ hashFiles('fuzz/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-fuzz-registry-
+
+      - name: Cache fuzz build artifacts
+        uses: actions/cache@v4
+        with:
+          path: fuzz/target
+          key: ${{ runner.os }}-fuzz-target-${{ hashFiles('fuzz/Cargo.toml', 'Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-fuzz-target-
+
+      - name: Restore fuzz corpus
+        uses: actions/cache/restore@v4
+        with:
+          path: fuzz/corpus
+          key: fuzz-corpus-${{ github.sha }}
+          restore-keys: |
+            fuzz-corpus-
+
+      - name: Build all fuzz targets
+        run: cargo +nightly fuzz build
+
+      - name: Create corpus directories
+        run: |
+          mkdir -p fuzz/corpus/fuzz_parse_record
+          mkdir -p fuzz/corpus/fuzz_delimiters
+          mkdir -p fuzz/corpus/fuzz_parse_tone
+          mkdir -p fuzz/corpus/fuzz_parse_locations
+          mkdir -p fuzz/corpus/fuzz_parse_quotations
+
+      - name: "fuzz_parse_record"
+        run: |
+          cargo +nightly fuzz run fuzz_parse_record \
+            fuzz/corpus/fuzz_parse_record \
+            -- -max_total_time=${FUZZ_DURATION} -max_len=4096 -rss_limit_mb=1024
+
+      - name: "fuzz_delimiters"
+        run: |
+          cargo +nightly fuzz run fuzz_delimiters \
+            fuzz/corpus/fuzz_delimiters \
+            -- -max_total_time=${FUZZ_DURATION} -max_len=1024 -rss_limit_mb=1024
+
+      - name: "fuzz_parse_tone"
+        run: |
+          cargo +nightly fuzz run fuzz_parse_tone \
+            fuzz/corpus/fuzz_parse_tone \
+            -- -max_total_time=${FUZZ_DURATION} -max_len=1024 -rss_limit_mb=1024
+
+      - name: "fuzz_parse_locations"
+        run: |
+          cargo +nightly fuzz run fuzz_parse_locations \
+            fuzz/corpus/fuzz_parse_locations \
+            -- -max_total_time=${FUZZ_DURATION} -max_len=2048 -rss_limit_mb=1024
+
+      - name: "fuzz_parse_quotations"
+        run: |
+          cargo +nightly fuzz run fuzz_parse_quotations \
+            fuzz/corpus/fuzz_parse_quotations \
+            -- -max_total_time=${FUZZ_DURATION} -max_len=2048 -rss_limit_mb=1024
+
+      # Save corpus even if a fuzz target crashes
+      - name: Save fuzz corpus
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: fuzz/corpus
+          key: fuzz-corpus-${{ github.sha }}
+
+      # Upload crash artifacts if any target found a bug
+      - name: Upload crash artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-crash-artifacts
+          path: fuzz/artifacts/
+          if-no-files-found: ignore
+          retention-days: 90

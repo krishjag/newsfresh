@@ -1,0 +1,10 @@
+/target
+/persisted-storage
+/data
+/agent/__pycache__
+/agent/venv
+/agent/.env
+/fuzz/artifacts
+/fuzz/corpus
+/coverage
+/.claude
