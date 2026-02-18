@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn test_parse_f64() {
-        assert!((parse_f64("3.14") - 3.14).abs() < 1e-10);
+        assert!((parse_f64("3.24") - 3.24).abs() < 1e-10);
         assert!((parse_f64("abc")).abs() < 1e-10);
         assert!((parse_f64("")).abs() < 1e-10);
     }
