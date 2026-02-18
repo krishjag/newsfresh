@@ -5,31 +5,70 @@ use crate::error::NewsfreshError;
 pub fn print_tealeaf_schema(writer: &mut dyn Write) -> Result<(), NewsfreshError> {
     writeln!(writer, "# GDELT GKG v2.1 TeaLeaf Schema")?;
     writeln!(writer)?;
-    writeln!(writer, "@struct tone (tone: float, positive_score: float, negative_score: float, polarity: float, activity_ref_density: float, self_group_ref_density: float, word_count: int)")?;
+    writeln!(
+        writer,
+        "@struct tone (tone: float, positive_score: float, negative_score: float, polarity: float, activity_ref_density: float, self_group_ref_density: float, word_count: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct location_v1 (location_type: int, full_name: string, country_code: string, adm1_code: string, latitude: float, longitude: float, feature_id: string)")?;
+    writeln!(
+        writer,
+        "@struct location_v1 (location_type: int, full_name: string, country_code: string, adm1_code: string, latitude: float, longitude: float, feature_id: string)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct enhanced_location (location_type: int, full_name: string, country_code: string, adm1_code: string, adm2_code: string, latitude: float, longitude: float, feature_id: string, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct enhanced_location (location_type: int, full_name: string, country_code: string, adm1_code: string, adm2_code: string, latitude: float, longitude: float, feature_id: string, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct count_v1 (count_type: string, count: int, object_type: string, location: location_v1)")?;
+    writeln!(
+        writer,
+        "@struct count_v1 (count_type: string, count: int, object_type: string, location: location_v1)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct count_v21 (count_type: string, count: int, object_type: string, location: location_v1, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct count_v21 (count_type: string, count: int, object_type: string, location: location_v1, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct enhanced_theme (theme: string, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct enhanced_theme (theme: string, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct enhanced_entity (name: string, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct enhanced_entity (name: string, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct enhanced_date (resolution: int, month: int, day: int, year: int, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct enhanced_date (resolution: int, month: int, day: int, year: int, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct gcam_entry (dimension: string, value: float)")?;
+    writeln!(
+        writer,
+        "@struct gcam_entry (dimension: string, value: float)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct quotation (offset: int, length: int, verb: string, quote: string)")?;
+    writeln!(
+        writer,
+        "@struct quotation (offset: int, length: int, verb: string, quote: string)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct name_entry (name: string, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct name_entry (name: string, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct amount_entry (amount: float, object: string, char_offset: int)")?;
+    writeln!(
+        writer,
+        "@struct amount_entry (amount: float, object: string, char_offset: int)"
+    )?;
     writeln!(writer)?;
-    writeln!(writer, "@struct translation_info (source_language: string, engine: string)")?;
+    writeln!(
+        writer,
+        "@struct translation_info (source_language: string, engine: string)"
+    )?;
     writeln!(writer)?;
     writeln!(writer, "@struct gkg_record (")?;
     writeln!(writer, "  gkg_record_id: string,")?;

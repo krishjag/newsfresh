@@ -23,7 +23,10 @@ pub fn parse_record(line: &str, line_number: usize) -> Result<GkgRecord, Newsfre
     if fields.len() < 5 {
         return Err(NewsfreshError::Parse {
             line: line_number,
-            message: format!("Expected at least 5 tab-delimited fields, got {}", fields.len()),
+            message: format!(
+                "Expected at least 5 tab-delimited fields, got {}",
+                fields.len()
+            ),
         });
     }
 
@@ -72,7 +75,10 @@ mod tests {
         assert!(result.is_err());
         let err = result.unwrap_err();
         let msg = format!("{}", err);
-        assert!(msg.contains("at least 5"), "error should mention field count: {msg}");
+        assert!(
+            msg.contains("at least 5"),
+            "error should mention field count: {msg}"
+        );
     }
 
     #[test]
@@ -94,33 +100,33 @@ mod tests {
     fn full_27_field_record_parses_key_fields() {
         // Build a tab-delimited string with 27 fields (indices 0..26)
         let fields = [
-            "20250217120000-T1",                                        // 0: gkg_record_id
-            "20250217120000",                                           // 1: date
-            "1",                                                        // 2: source_collection_id
-            "nytimes.com",                                              // 3: source_common_name
-            "https://nytimes.com/test",                                 // 4: document_identifier
-            "",                                                         // 5: v1_counts
-            "",                                                         // 6: v21_counts
-            "ELECTION;LEADER",                                          // 7: v1_themes
-            "",                                                         // 8: v2_enhanced_themes
-            "1#United States#US#US06#38.0#-97.0#US",                    // 9: v1_locations
-            "",                                                         // 10: v2_enhanced_locations
-            "donald trump",                                             // 11: v1_persons
-            "",                                                         // 12: v2_enhanced_persons
-            "congress",                                                 // 13: v1_organizations
-            "",                                                         // 14: v2_enhanced_organizations
-            "-1.5,2.0,3.5,5.5,10.0,0.5,500",                           // 15: tone
-            "",                                                         // 16: v21_enhanced_dates
-            "",                                                         // 17: gcam
-            "",                                                         // 18: sharing_image
-            "",                                                         // 19: related_images
-            "",                                                         // 20: social_image_embeds
-            "",                                                         // 21: social_video_embeds
-            "",                                                         // 22: quotations
-            "",                                                         // 23: all_names
-            "",                                                         // 24: amounts
-            "",                                                         // 25: translation_info
-            "",                                                         // 26: extras_xml
+            "20250217120000-T1",                     // 0: gkg_record_id
+            "20250217120000",                        // 1: date
+            "1",                                     // 2: source_collection_id
+            "nytimes.com",                           // 3: source_common_name
+            "https://nytimes.com/test",              // 4: document_identifier
+            "",                                      // 5: v1_counts
+            "",                                      // 6: v21_counts
+            "ELECTION;LEADER",                       // 7: v1_themes
+            "",                                      // 8: v2_enhanced_themes
+            "1#United States#US#US06#38.0#-97.0#US", // 9: v1_locations
+            "",                                      // 10: v2_enhanced_locations
+            "donald trump",                          // 11: v1_persons
+            "",                                      // 12: v2_enhanced_persons
+            "congress",                              // 13: v1_organizations
+            "",                                      // 14: v2_enhanced_organizations
+            "-1.5,2.0,3.5,5.5,10.0,0.5,500",         // 15: tone
+            "",                                      // 16: v21_enhanced_dates
+            "",                                      // 17: gcam
+            "",                                      // 18: sharing_image
+            "",                                      // 19: related_images
+            "",                                      // 20: social_image_embeds
+            "",                                      // 21: social_video_embeds
+            "",                                      // 22: quotations
+            "",                                      // 23: all_names
+            "",                                      // 24: amounts
+            "",                                      // 25: translation_info
+            "",                                      // 26: extras_xml
         ];
         let line = fields.join("\t");
 

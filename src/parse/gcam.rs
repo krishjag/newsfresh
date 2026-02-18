@@ -1,5 +1,5 @@
-use crate::model::gcam::GcamEntry;
 use super::delimiters::parse_f64;
+use crate::model::gcam::GcamEntry;
 
 pub fn parse_gcam(field: &str) -> Vec<GcamEntry> {
     if field.is_empty() {

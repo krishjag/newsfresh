@@ -60,7 +60,5 @@ pub fn lastupdate_url(translation: bool) -> &'static str {
 }
 
 pub fn historical_url(date: &str) -> String {
-    format!(
-        "http://data.gdeltproject.org/gdeltv2/{date}.gkg.csv.zip"
-    )
+    format!("http://data.gdeltproject.org/gdeltv2/{date}.gkg.csv.zip")
 }

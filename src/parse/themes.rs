@@ -1,5 +1,5 @@
-use crate::model::theme::EnhancedTheme;
 use super::delimiters::parse_i64;
+use crate::model::theme::EnhancedTheme;
 
 pub fn parse_themes_v1(field: &str) -> Vec<String> {
     if field.is_empty() {
@@ -43,7 +43,8 @@ mod tests {
 
     #[test]
     fn test_parse_themes_v1_populated() {
-        let result = parse_themes_v1("TAX_FNCACT_PRESIDENT;CRISISLEX_C03_WELLBEING;WB_2024_GOVERNANCE");
+        let result =
+            parse_themes_v1("TAX_FNCACT_PRESIDENT;CRISISLEX_C03_WELLBEING;WB_2024_GOVERNANCE");
         assert_eq!(result.len(), 3);
         assert_eq!(result[0], "TAX_FNCACT_PRESIDENT");
         assert_eq!(result[1], "CRISISLEX_C03_WELLBEING");

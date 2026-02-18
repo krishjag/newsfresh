@@ -1,5 +1,5 @@
-use crate::model::amount::AmountEntry;
 use super::delimiters::*;
+use crate::model::amount::AmountEntry;
 
 pub fn parse_amounts(field: &str) -> Vec<AmountEntry> {
     if field.is_empty() {

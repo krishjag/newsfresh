@@ -1,5 +1,5 @@
-use crate::model::person::EnhancedEntity;
 use super::delimiters::parse_i64;
+use crate::model::person::EnhancedEntity;
 
 pub fn parse_persons_v1(field: &str) -> Vec<String> {
     if field.is_empty() {

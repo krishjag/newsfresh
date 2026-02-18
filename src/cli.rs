@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use clap::{Parser, Subcommand, Args, ValueEnum};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 
 #[derive(Parser)]
 #[command(name = "newsfresh", about = "Query and analyze GDELT GKG v2.1 data")]
@@ -279,7 +279,14 @@ mod tests {
     #[test]
     fn test_parse_query_with_filters() {
         let cli = Cli::try_parse_from([
-            "newsfresh", "query", "--country", "US", "--person", "Trump", "--limit", "10",
+            "newsfresh",
+            "query",
+            "--country",
+            "US",
+            "--person",
+            "Trump",
+            "--limit",
+            "10",
         ])
         .unwrap();
         if let Command::Query(args) = cli.command {
@@ -294,7 +301,12 @@ mod tests {
     #[test]
     fn test_parse_analyze_command() {
         let cli = Cli::try_parse_from([
-            "newsfresh", "analyze", "--search", "US politics", "--latest", "--stats",
+            "newsfresh",
+            "analyze",
+            "--search",
+            "US politics",
+            "--latest",
+            "--stats",
         ])
         .unwrap();
         if let Command::Analyze(args) = cli.command {

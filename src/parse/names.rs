@@ -1,5 +1,5 @@
-use crate::model::name::NameEntry;
 use super::delimiters::parse_i64;
+use crate::model::name::NameEntry;
 
 pub fn parse_names(field: &str) -> Vec<NameEntry> {
     if field.is_empty() {

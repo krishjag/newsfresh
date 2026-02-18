@@ -1,13 +1,13 @@
 use tantivy::collector::TopDocs;
 use tantivy::query::QueryParser;
 use tantivy::schema::*;
-use tantivy::{doc, Index, ReloadPolicy};
+use tantivy::{Index, ReloadPolicy, doc};
 
 use crate::error::NewsfreshError;
 use crate::model::GkgRecord;
 
-use super::enrich;
 use super::ScoredHit;
+use super::enrich;
 
 struct GkgSearchSchema {
     schema: Schema,
@@ -126,8 +126,7 @@ impl super::SearchEngine for TantivyEngine {
 
         let searcher = reader.searcher();
 
-        let query_parser =
-            QueryParser::for_index(index, self.search_schema.all_text_fields());
+        let query_parser = QueryParser::for_index(index, self.search_schema.all_text_fields());
         let query = query_parser
             .parse_query(query_str)
             .map_err(|e| NewsfreshError::Other(format!("Failed to parse query: {e}")))?;

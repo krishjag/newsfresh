@@ -25,6 +25,10 @@ pub fn create_formatter(
     match format {
         "tealeaf" => Box::new(tealeaf::TealeafFormatter::new(writer, false)),
         "tealeaf-compact" => Box::new(tealeaf::TealeafFormatter::new(writer, true)),
-        _ => Box::new(json::JsonFormatter::new(writer, format != "json-compact", fields.clone())),
+        _ => Box::new(json::JsonFormatter::new(
+            writer,
+            format != "json-compact",
+            fields.clone(),
+        )),
     }
 }

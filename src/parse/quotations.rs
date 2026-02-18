@@ -1,5 +1,5 @@
-use crate::model::quotation::Quotation;
 use super::delimiters::parse_i64;
+use crate::model::quotation::Quotation;
 
 pub fn parse_quotations(field: &str) -> Vec<Quotation> {
     if field.is_empty() {
@@ -45,9 +45,8 @@ mod tests {
 
     #[test]
     fn test_parse_quotations_multiple() {
-        let result = parse_quotations(
-            "120|45|said|we must act now#300|30|stated|the economy is growing"
-        );
+        let result =
+            parse_quotations("120|45|said|we must act now#300|30|stated|the economy is growing");
         assert_eq!(result.len(), 2);
         assert_eq!(result[0].offset, 120);
         assert_eq!(result[0].verb, "said");

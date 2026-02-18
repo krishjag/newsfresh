@@ -64,8 +64,7 @@ pub fn compute_stats(
         let mut seen_countries = HashSet::new();
         for loc in &record.v2_enhanced_locations {
             if !loc.country_code.is_empty() && seen_countries.insert(loc.country_code.clone()) {
-                let name = fips::country_name(&loc.country_code)
-                    .unwrap_or(&loc.country_code);
+                let name = fips::country_name(&loc.country_code).unwrap_or(&loc.country_code);
                 countries.push(format!("{name} ({code})", code = loc.country_code));
             }
         }
@@ -146,10 +145,7 @@ fn compute_frequency(
     Ok(entries)
 }
 
-fn compute_tone_stats(
-    urls: &[String],
-    tones: &[f64],
-) -> Result<Option<ToneStats>, NewsfreshError> {
+fn compute_tone_stats(urls: &[String], tones: &[f64]) -> Result<Option<ToneStats>, NewsfreshError> {
     if tones.is_empty() {
         return Ok(None);
     }
@@ -404,8 +400,7 @@ mod tests {
         let r2 = make_test_record("bbc.co.uk", "Bob Jones", 1.2);
         let r3 = make_test_record("cnn.com", "Alice Smith", 5.0);
 
-        let records: Vec<(f32, &GkgRecord)> =
-            vec![(1.0, &r1), (0.8, &r2), (0.6, &r3)];
+        let records: Vec<(f32, &GkgRecord)> = vec![(1.0, &r1), (0.8, &r2), (0.6, &r3)];
 
         let stats = compute_stats(&records, 5).expect("compute_stats should succeed");
 
@@ -416,7 +411,10 @@ mod tests {
 
         let tone = stats.tone.as_ref().expect("tone stats should be present");
         // Mean of -3.5, 1.2, 5.0 is approximately 0.9
-        assert!(tone.mean > -4.0 && tone.mean < 6.0, "mean should be reasonable");
+        assert!(
+            tone.mean > -4.0 && tone.mean < 6.0,
+            "mean should be reasonable"
+        );
         assert!(tone.min <= -3.5, "min should be <= -3.5");
         assert!(tone.max >= 5.0, "max should be >= 5.0");
     }
@@ -486,14 +484,35 @@ mod tests {
 
         let output = String::from_utf8(buf).expect("output should be valid UTF-8");
 
-        assert!(output.contains("GDELT Analysis Stats"), "should contain header");
+        assert!(
+            output.contains("GDELT Analysis Stats"),
+            "should contain header"
+        );
         assert!(output.contains("42 records"), "should contain record count");
-        assert!(output.contains("Top Themes"), "should contain Top Themes section");
-        assert!(output.contains("CLIMATE CHANGE"), "should contain theme name");
-        assert!(output.contains("Top Countries"), "should contain Top Countries section");
+        assert!(
+            output.contains("Top Themes"),
+            "should contain Top Themes section"
+        );
+        assert!(
+            output.contains("CLIMATE CHANGE"),
+            "should contain theme name"
+        );
+        assert!(
+            output.contains("Top Countries"),
+            "should contain Top Countries section"
+        );
         assert!(output.contains("Tone"), "should contain Tone section");
-        assert!(output.contains("Top Persons"), "should contain Top Persons section");
-        assert!(output.contains("Top Organizations"), "should contain Top Organizations section");
-        assert!(output.contains("Top Sources"), "should contain Top Sources section");
+        assert!(
+            output.contains("Top Persons"),
+            "should contain Top Persons section"
+        );
+        assert!(
+            output.contains("Top Organizations"),
+            "should contain Top Organizations section"
+        );
+        assert!(
+            output.contains("Top Sources"),
+            "should contain Top Sources section"
+        );
     }
 }

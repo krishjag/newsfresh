@@ -1,6 +1,6 @@
+use super::delimiters::*;
 use crate::model::count::{CountV1, CountV21};
 use crate::model::location::LocationV1;
-use super::delimiters::*;
 
 pub fn parse_counts_v1(field: &str) -> Vec<CountV1> {
     if field.is_empty() {
@@ -76,7 +76,7 @@ mod tests {
     #[test]
     fn test_parse_counts_v1_single() {
         let result = parse_counts_v1(
-            "KILL#5#attackers#4#Baghdad, Baghdad, Iraq#IZ#IZ05#33.34#44.4#-1552751"
+            "KILL#5#attackers#4#Baghdad, Baghdad, Iraq#IZ#IZ05#33.34#44.4#-1552751",
         );
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].count_type, "KILL");
@@ -97,7 +97,7 @@ mod tests {
     #[test]
     fn test_parse_counts_v21_single() {
         let result = parse_counts_v21(
-            "KILL#5#attackers#4#Baghdad, Baghdad, Iraq#IZ#IZ05#33.34#44.4#-1552751#300"
+            "KILL#5#attackers#4#Baghdad, Baghdad, Iraq#IZ#IZ05#33.34#44.4#-1552751#300",
         );
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].count_type, "KILL");

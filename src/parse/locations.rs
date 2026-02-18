@@ -1,5 +1,5 @@
-use crate::model::location::{EnhancedLocation, LocationV1};
 use super::delimiters::*;
+use crate::model::location::{EnhancedLocation, LocationV1};
 
 pub fn parse_locations_v1(field: &str) -> Vec<LocationV1> {
     if field.is_empty() {
@@ -66,10 +66,15 @@ mod tests {
 
     #[test]
     fn test_parse_locations_v1_single() {
-        let result = parse_locations_v1("4#Washington, District of Columbia, United States#US#USDC#38.8951#-77.0364#531871");
+        let result = parse_locations_v1(
+            "4#Washington, District of Columbia, United States#US#USDC#38.8951#-77.0364#531871",
+        );
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].location_type, 4);
-        assert_eq!(result[0].full_name, "Washington, District of Columbia, United States");
+        assert_eq!(
+            result[0].full_name,
+            "Washington, District of Columbia, United States"
+        );
         assert_eq!(result[0].country_code, "US");
         assert_eq!(result[0].adm1_code, "USDC");
         assert!((result[0].latitude - 38.8951).abs() < 1e-4);
@@ -86,11 +91,14 @@ mod tests {
     #[test]
     fn test_parse_enhanced_locations_single() {
         let result = parse_enhanced_locations(
-            "4#Washington, District of Columbia, United States#US#USDC##38.8951#-77.0364#531871#120"
+            "4#Washington, District of Columbia, United States#US#USDC##38.8951#-77.0364#531871#120",
         );
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].location_type, 4);
-        assert_eq!(result[0].full_name, "Washington, District of Columbia, United States");
+        assert_eq!(
+            result[0].full_name,
+            "Washington, District of Columbia, United States"
+        );
         assert_eq!(result[0].country_code, "US");
         assert_eq!(result[0].adm1_code, "USDC");
         assert_eq!(result[0].adm2_code, "");

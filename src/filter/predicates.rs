@@ -1,5 +1,5 @@
-use crate::model::GkgRecord;
 use super::RecordFilter;
+use crate::model::GkgRecord;
 
 pub struct PersonFilter {
     pub pattern: String,
@@ -44,7 +44,10 @@ pub struct ThemeFilter {
 impl RecordFilter for ThemeFilter {
     fn matches(&self, record: &GkgRecord) -> bool {
         let pat = self.pattern.to_uppercase();
-        record.v1_themes.iter().any(|t| t.to_uppercase().contains(&pat))
+        record
+            .v1_themes
+            .iter()
+            .any(|t| t.to_uppercase().contains(&pat))
             || record
                 .v2_enhanced_themes
                 .iter()
@@ -175,24 +178,54 @@ mod tests {
             source_common_name: "nytimes.com".into(),
             document_identifier: "https://nytimes.com/article".into(),
             v1_persons: vec!["donald trump".into()],
-            v2_enhanced_persons: vec![EnhancedEntity { name: "elon musk".into(), char_offset: 100 }],
+            v2_enhanced_persons: vec![EnhancedEntity {
+                name: "elon musk".into(),
+                char_offset: 100,
+            }],
             v1_organizations: vec!["congress".into()],
             v2_enhanced_organizations: vec![],
             v1_themes: vec!["LEADER".into(), "TAX_FNCACT_PRESIDENT".into()],
-            v2_enhanced_themes: vec![EnhancedTheme { theme: "ELECTION".into(), char_offset: 50 }],
+            v2_enhanced_themes: vec![EnhancedTheme {
+                theme: "ELECTION".into(),
+                char_offset: 50,
+            }],
             v1_locations: vec![LocationV1 {
-                location_type: 1, full_name: "United States".into(),
-                country_code: "US".into(), adm1_code: "US06".into(),
-                latitude: 38.0, longitude: -97.0, feature_id: "US".into(),
+                location_type: 1,
+                full_name: "United States".into(),
+                country_code: "US".into(),
+                adm1_code: "US06".into(),
+                latitude: 38.0,
+                longitude: -97.0,
+                feature_id: "US".into(),
             }],
             v2_enhanced_locations: vec![],
-            tone: Some(Tone { tone: -1.5, positive_score: 2.0, negative_score: 3.5, polarity: 5.5, activity_ref_density: 10.0, self_group_ref_density: 0.5, word_count: 500 }),
-            quotations: vec![Quotation { offset: 10, length: 50, verb: "said".into(), quote: "test quote".into() }],
+            tone: Some(Tone {
+                tone: -1.5,
+                positive_score: 2.0,
+                negative_score: 3.5,
+                polarity: 5.5,
+                activity_ref_density: 10.0,
+                self_group_ref_density: 0.5,
+                word_count: 500,
+            }),
+            quotations: vec![Quotation {
+                offset: 10,
+                length: 50,
+                verb: "said".into(),
+                quote: "test quote".into(),
+            }],
             sharing_image: Some("https://img.example.com/photo.jpg".into()),
-            v1_counts: vec![], v21_counts: vec![], v21_enhanced_dates: vec![],
-            gcam: vec![], related_images: vec![], social_image_embeds: vec![],
-            social_video_embeds: vec![], all_names: vec![], amounts: vec![],
-            translation_info: None, extras_xml: None,
+            v1_counts: vec![],
+            v21_counts: vec![],
+            v21_enhanced_dates: vec![],
+            gcam: vec![],
+            related_images: vec![],
+            social_image_embeds: vec![],
+            social_video_embeds: vec![],
+            all_names: vec![],
+            amounts: vec![],
+            translation_info: None,
+            extras_xml: None,
         }
     }
 
@@ -200,13 +233,17 @@ mod tests {
 
     #[test]
     fn person_filter_matches_case_insensitive() {
-        let filter = PersonFilter { pattern: "trump".into() };
+        let filter = PersonFilter {
+            pattern: "trump".into(),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn person_filter_no_match() {
-        let filter = PersonFilter { pattern: "obama".into() };
+        let filter = PersonFilter {
+            pattern: "obama".into(),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
@@ -214,13 +251,17 @@ mod tests {
 
     #[test]
     fn org_filter_matches() {
-        let filter = OrgFilter { pattern: "congress".into() };
+        let filter = OrgFilter {
+            pattern: "congress".into(),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn org_filter_no_match() {
-        let filter = OrgFilter { pattern: "pentagon".into() };
+        let filter = OrgFilter {
+            pattern: "pentagon".into(),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
@@ -228,13 +269,17 @@ mod tests {
 
     #[test]
     fn theme_filter_matches() {
-        let filter = ThemeFilter { pattern: "LEADER".into() };
+        let filter = ThemeFilter {
+            pattern: "LEADER".into(),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn theme_filter_no_match() {
-        let filter = ThemeFilter { pattern: "CLIMATE".into() };
+        let filter = ThemeFilter {
+            pattern: "CLIMATE".into(),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
@@ -242,13 +287,17 @@ mod tests {
 
     #[test]
     fn location_filter_matches() {
-        let filter = LocationFilter { pattern: "United States".into() };
+        let filter = LocationFilter {
+            pattern: "United States".into(),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn location_filter_no_match() {
-        let filter = LocationFilter { pattern: "London".into() };
+        let filter = LocationFilter {
+            pattern: "London".into(),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
@@ -270,19 +319,28 @@ mod tests {
 
     #[test]
     fn tone_range_filter_matches_in_range() {
-        let filter = ToneRangeFilter { min: Some(-5.0), max: Some(0.0) };
+        let filter = ToneRangeFilter {
+            min: Some(-5.0),
+            max: Some(0.0),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn tone_range_filter_no_match_out_of_range() {
-        let filter = ToneRangeFilter { min: Some(0.0), max: Some(5.0) };
+        let filter = ToneRangeFilter {
+            min: Some(0.0),
+            max: Some(5.0),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
     #[test]
     fn tone_range_filter_no_tone_returns_false() {
-        let filter = ToneRangeFilter { min: Some(-5.0), max: Some(0.0) };
+        let filter = ToneRangeFilter {
+            min: Some(-5.0),
+            max: Some(0.0),
+        };
         let mut record = make_test_record();
         record.tone = None;
         assert!(!filter.matches(&record));
@@ -292,13 +350,19 @@ mod tests {
 
     #[test]
     fn date_range_filter_matches_in_range() {
-        let filter = DateRangeFilter { from: Some(20250101000000), to: Some(20250301000000) };
+        let filter = DateRangeFilter {
+            from: Some(20250101000000),
+            to: Some(20250301000000),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn date_range_filter_no_match_out_of_range() {
-        let filter = DateRangeFilter { from: Some(20250301000000), to: None };
+        let filter = DateRangeFilter {
+            from: Some(20250301000000),
+            to: None,
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 
@@ -306,13 +370,17 @@ mod tests {
 
     #[test]
     fn source_filter_matches() {
-        let filter = SourceFilter { pattern: "nytimes".into() };
+        let filter = SourceFilter {
+            pattern: "nytimes".into(),
+        };
         assert!(filter.matches(&make_test_record()));
     }
 
     #[test]
     fn source_filter_no_match() {
-        let filter = SourceFilter { pattern: "bbc".into() };
+        let filter = SourceFilter {
+            pattern: "bbc".into(),
+        };
         assert!(!filter.matches(&make_test_record()));
     }
 

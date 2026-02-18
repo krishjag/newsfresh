@@ -2,7 +2,7 @@ use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 
 use clap::Parser;
-use tracing::{warn, debug};
+use tracing::{debug, warn};
 
 use newsfresh::cli::*;
 use newsfresh::error::NewsfreshError;
@@ -194,7 +194,10 @@ async fn cmd_analyze(args: AnalyzeArgs) -> Result<(), NewsfreshError> {
         let stats = newsfresh::stats::compute_stats(&filtered, args.stats_top_n)?;
         let mut stdout = std::io::stdout();
         newsfresh::stats::print_stats(&stats, &mut stdout)?;
-        eprintln!("Stats computed over {} records ({errors} parse errors)", filtered.len());
+        eprintln!(
+            "Stats computed over {} records ({errors} parse errors)",
+            filtered.len()
+        );
     } else {
         let writer = make_writer(&args.output.output)?;
         let format_str = format_to_str(&args.output.format);
@@ -220,7 +223,10 @@ async fn cmd_analyze(args: AnalyzeArgs) -> Result<(), NewsfreshError> {
         }
 
         formatter.finish()?;
-        eprintln!("Output {count} results (top {}, {errors} parse errors)", args.limit);
+        eprintln!(
+            "Output {count} results (top {}, {errors} parse errors)",
+            args.limit
+        );
     }
     Ok(())
 }
@@ -253,7 +259,9 @@ fn resolve_data_dir(persist: bool) -> Result<DataDir, NewsfreshError> {
                 return Ok(DataDir::Persisted(dir));
             }
             Err(e) => {
-                eprintln!("Warning: could not create {PERSISTED_STORAGE_DIR}/: {e}, using temp dir");
+                eprintln!(
+                    "Warning: could not create {PERSISTED_STORAGE_DIR}/: {e}, using temp dir"
+                );
             }
         }
     }

@@ -32,7 +32,10 @@ mod tests {
     #[test]
     fn known_values_map_correctly() {
         assert_eq!(SourceCollectionId::from(1), SourceCollectionId::Web);
-        assert_eq!(SourceCollectionId::from(2), SourceCollectionId::CitationOnly);
+        assert_eq!(
+            SourceCollectionId::from(2),
+            SourceCollectionId::CitationOnly
+        );
         assert_eq!(SourceCollectionId::from(3), SourceCollectionId::Core);
         assert_eq!(SourceCollectionId::from(4), SourceCollectionId::Dtic);
         assert_eq!(SourceCollectionId::from(5), SourceCollectionId::Jstor);

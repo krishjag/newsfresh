@@ -1,5 +1,5 @@
-use crate::model::date::EnhancedDate;
 use super::delimiters::{parse_i32, parse_i64};
+use crate::model::date::EnhancedDate;
 
 pub fn parse_enhanced_dates(field: &str) -> Vec<EnhancedDate> {
     if field.is_empty() {

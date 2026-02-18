@@ -1,10 +1,10 @@
 use std::io::Write;
 
-use tealeaf::{FieldType, Schema, TeaLeafBuilder, Value as TlValue, ObjectMap};
+use tealeaf::{FieldType, ObjectMap, Schema, TeaLeafBuilder, Value as TlValue};
 
+use super::OutputFormatter;
 use crate::error::NewsfreshError;
 use crate::model::{GkgRecord, ScoredRecord};
-use super::OutputFormatter;
 
 pub struct TealeafFormatter {
     writer: Box<dyn Write>,
@@ -28,15 +28,15 @@ impl OutputFormatter for TealeafFormatter {
     }
 
     fn write_record(&mut self, record: &GkgRecord) -> Result<(), NewsfreshError> {
-        let json = serde_json::to_value(record)
-            .map_err(|e| NewsfreshError::Other(e.to_string()))?;
+        let json =
+            serde_json::to_value(record).map_err(|e| NewsfreshError::Other(e.to_string()))?;
         self.records.push(json_to_tealeaf(&json));
         Ok(())
     }
 
     fn write_scored_record(&mut self, scored: &ScoredRecord) -> Result<(), NewsfreshError> {
-        let json = serde_json::to_value(scored)
-            .map_err(|e| NewsfreshError::Other(e.to_string()))?;
+        let json =
+            serde_json::to_value(scored).map_err(|e| NewsfreshError::Other(e.to_string()))?;
         self.records.push(json_to_tealeaf(&json));
         Ok(())
     }
@@ -76,9 +76,7 @@ fn json_to_tealeaf(val: &serde_json::Value) -> TlValue {
             }
         }
         serde_json::Value::String(s) => TlValue::String(s.clone()),
-        serde_json::Value::Array(arr) => {
-            TlValue::Array(arr.iter().map(json_to_tealeaf).collect())
-        }
+        serde_json::Value::Array(arr) => TlValue::Array(arr.iter().map(json_to_tealeaf).collect()),
         serde_json::Value::Object(obj) => {
             let map: ObjectMap<String, TlValue> = obj
                 .iter()
@@ -167,15 +165,30 @@ fn build_schemas() -> Vec<Schema> {
             .field("v1_counts", FieldType::new("count_v1").array())
             .field("v21_counts", FieldType::new("count_v21").array())
             .field("v1_themes", FieldType::new("string").array())
-            .field("v2_enhanced_themes", FieldType::new("enhanced_theme").array())
+            .field(
+                "v2_enhanced_themes",
+                FieldType::new("enhanced_theme").array(),
+            )
             .field("v1_locations", FieldType::new("location_v1").array())
-            .field("v2_enhanced_locations", FieldType::new("enhanced_location").array())
+            .field(
+                "v2_enhanced_locations",
+                FieldType::new("enhanced_location").array(),
+            )
             .field("v1_persons", FieldType::new("string").array())
-            .field("v2_enhanced_persons", FieldType::new("enhanced_entity").array())
+            .field(
+                "v2_enhanced_persons",
+                FieldType::new("enhanced_entity").array(),
+            )
             .field("v1_organizations", FieldType::new("string").array())
-            .field("v2_enhanced_organizations", FieldType::new("enhanced_entity").array())
+            .field(
+                "v2_enhanced_organizations",
+                FieldType::new("enhanced_entity").array(),
+            )
             .field("tone", FieldType::new("tone").nullable())
-            .field("v21_enhanced_dates", FieldType::new("enhanced_date").array())
+            .field(
+                "v21_enhanced_dates",
+                FieldType::new("enhanced_date").array(),
+            )
             .field("gcam", FieldType::new("gcam_entry").array())
             .field("sharing_image", FieldType::new("string").nullable())
             .field("related_images", FieldType::new("string").array())
@@ -184,7 +197,10 @@ fn build_schemas() -> Vec<Schema> {
             .field("quotations", FieldType::new("quotation").array())
             .field("all_names", FieldType::new("name_entry").array())
             .field("amounts", FieldType::new("amount_entry").array())
-            .field("translation_info", FieldType::new("translation_info").nullable())
+            .field(
+                "translation_info",
+                FieldType::new("translation_info").nullable(),
+            )
             .field("extras_xml", FieldType::new("string").nullable()),
         Schema::new("scored_gkg_record")
             .field("relevance_score", FieldType::new("float"))
@@ -196,15 +212,30 @@ fn build_schemas() -> Vec<Schema> {
             .field("v1_counts", FieldType::new("count_v1").array())
             .field("v21_counts", FieldType::new("count_v21").array())
             .field("v1_themes", FieldType::new("string").array())
-            .field("v2_enhanced_themes", FieldType::new("enhanced_theme").array())
+            .field(
+                "v2_enhanced_themes",
+                FieldType::new("enhanced_theme").array(),
+            )
             .field("v1_locations", FieldType::new("location_v1").array())
-            .field("v2_enhanced_locations", FieldType::new("enhanced_location").array())
+            .field(
+                "v2_enhanced_locations",
+                FieldType::new("enhanced_location").array(),
+            )
             .field("v1_persons", FieldType::new("string").array())
-            .field("v2_enhanced_persons", FieldType::new("enhanced_entity").array())
+            .field(
+                "v2_enhanced_persons",
+                FieldType::new("enhanced_entity").array(),
+            )
             .field("v1_organizations", FieldType::new("string").array())
-            .field("v2_enhanced_organizations", FieldType::new("enhanced_entity").array())
+            .field(
+                "v2_enhanced_organizations",
+                FieldType::new("enhanced_entity").array(),
+            )
             .field("tone", FieldType::new("tone").nullable())
-            .field("v21_enhanced_dates", FieldType::new("enhanced_date").array())
+            .field(
+                "v21_enhanced_dates",
+                FieldType::new("enhanced_date").array(),
+            )
             .field("gcam", FieldType::new("gcam_entry").array())
             .field("sharing_image", FieldType::new("string").nullable())
             .field("related_images", FieldType::new("string").array())
@@ -213,7 +244,10 @@ fn build_schemas() -> Vec<Schema> {
             .field("quotations", FieldType::new("quotation").array())
             .field("all_names", FieldType::new("name_entry").array())
             .field("amounts", FieldType::new("amount_entry").array())
-            .field("translation_info", FieldType::new("translation_info").nullable())
+            .field(
+                "translation_info",
+                FieldType::new("translation_info").nullable(),
+            )
             .field("extras_xml", FieldType::new("string").nullable()),
     ]
 }

@@ -1,5 +1,5 @@
-use crate::model::tone::Tone;
 use super::delimiters::parse_f64;
+use crate::model::tone::Tone;
 
 pub fn parse_tone(field: &str) -> Option<Tone> {
     if field.is_empty() {

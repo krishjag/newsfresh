@@ -1,9 +1,9 @@
 use std::io::Write;
 
-use crate::error::NewsfreshError;
-use crate::model::{GkgRecord, ScoredRecord};
 use super::OutputFormatter;
 use super::field_select::project_record;
+use crate::error::NewsfreshError;
+use crate::model::{GkgRecord, ScoredRecord};
 
 pub struct JsonFormatter {
     writer: Box<dyn Write>,
@@ -88,24 +88,54 @@ mod tests {
             source_common_name: "nytimes.com".into(),
             document_identifier: "https://nytimes.com/article".into(),
             v1_persons: vec!["donald trump".into()],
-            v2_enhanced_persons: vec![EnhancedEntity { name: "elon musk".into(), char_offset: 100 }],
+            v2_enhanced_persons: vec![EnhancedEntity {
+                name: "elon musk".into(),
+                char_offset: 100,
+            }],
             v1_organizations: vec!["congress".into()],
             v2_enhanced_organizations: vec![],
             v1_themes: vec!["LEADER".into(), "TAX_FNCACT_PRESIDENT".into()],
-            v2_enhanced_themes: vec![EnhancedTheme { theme: "ELECTION".into(), char_offset: 50 }],
+            v2_enhanced_themes: vec![EnhancedTheme {
+                theme: "ELECTION".into(),
+                char_offset: 50,
+            }],
             v1_locations: vec![LocationV1 {
-                location_type: 1, full_name: "United States".into(),
-                country_code: "US".into(), adm1_code: "US06".into(),
-                latitude: 38.0, longitude: -97.0, feature_id: "US".into(),
+                location_type: 1,
+                full_name: "United States".into(),
+                country_code: "US".into(),
+                adm1_code: "US06".into(),
+                latitude: 38.0,
+                longitude: -97.0,
+                feature_id: "US".into(),
             }],
             v2_enhanced_locations: vec![],
-            tone: Some(Tone { tone: -1.5, positive_score: 2.0, negative_score: 3.5, polarity: 5.5, activity_ref_density: 10.0, self_group_ref_density: 0.5, word_count: 500 }),
-            quotations: vec![Quotation { offset: 10, length: 50, verb: "said".into(), quote: "test quote".into() }],
+            tone: Some(Tone {
+                tone: -1.5,
+                positive_score: 2.0,
+                negative_score: 3.5,
+                polarity: 5.5,
+                activity_ref_density: 10.0,
+                self_group_ref_density: 0.5,
+                word_count: 500,
+            }),
+            quotations: vec![Quotation {
+                offset: 10,
+                length: 50,
+                verb: "said".into(),
+                quote: "test quote".into(),
+            }],
             sharing_image: Some("https://img.example.com/photo.jpg".into()),
-            v1_counts: vec![], v21_counts: vec![], v21_enhanced_dates: vec![],
-            gcam: vec![], related_images: vec![], social_image_embeds: vec![],
-            social_video_embeds: vec![], all_names: vec![], amounts: vec![],
-            translation_info: None, extras_xml: None,
+            v1_counts: vec![],
+            v21_counts: vec![],
+            v21_enhanced_dates: vec![],
+            gcam: vec![],
+            related_images: vec![],
+            social_image_embeds: vec![],
+            social_video_embeds: vec![],
+            all_names: vec![],
+            amounts: vec![],
+            translation_info: None,
+            extras_xml: None,
         }
     }
 
